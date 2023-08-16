@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,21 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::prefix('v1')->group(function(){
+    
+    // index route 
+    Route::get('/', function() {
+
+        return response()->json([
+            'message' => 'No view defined for this route',
+            'current_api_version' => config('api.CURRENT_VERSION')
+        ]);
+    })->name('index');
+
+});
+
+Route::redirect('', 'api/' . config('api.CURRENT_VERSION'));
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
