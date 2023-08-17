@@ -31,9 +31,15 @@ Route::prefix('v1')->group(function(){
         ]);
     })->name('index');
 
-    Route::apiResource('habitation', HabitationController::class);
 
-    Route::apiResource('user', UserController::class);
+    // app routes
+    Route::middleware('auth:sanctum')->group(function() {
+        
+        Route::apiResource('habitation', HabitationController::class);
+
+        Route::apiResource('user', UserController::class);
+
+    });
 
     // auth routes
     Route::controller(AuthController::class)->prefix('auth')->group(function () {
