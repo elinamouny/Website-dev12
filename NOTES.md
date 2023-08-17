@@ -2,12 +2,12 @@
 
 Voici une liste du travail qu'il y a lieu de faire
 
-- **Creer la base de donnée**
+- **Creer la base de donnée** *[OK]*
 - **Mettre en place l'API**
     - Permettre la gestion des utilisateurs
-        - Authentification (login, logout, token)
+        - Authentification (login, logout, token) *[OK]*
         - Gestion de compte
-    - Permettre la recherche de d'habitation
+    - Permettre la recherche de d'habitation *[OK]*
     - Implementer un systeme de paiement (ulterieurement)
 - **Connecter l'API a l'application**
 
