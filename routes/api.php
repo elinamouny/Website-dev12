@@ -4,7 +4,6 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HabitationController;
 use App\Http\Controllers\UserController;
 use App\Models\Habitation;
-use App\Models\User;
 use App\MyStaff\ResponseHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,19 +32,21 @@ Route::prefix('v1')->group(function(){
 
 
     // app routes
-    Route::middleware('auth:sanctum')->group(function() {
+    Route::middleware('token')->group(function() {
         
         Route::apiResource('habitation', HabitationController::class);
+        Route::get('habitation/{id}/user', [HabitationController::class, 'user']);
 
         Route::apiResource('user', UserController::class);
+        Route::get('user/{id}/habitations', [UserController::class, 'habitations']);
 
     });
 
     // auth routes
     Route::controller(AuthController::class)->prefix('auth')->group(function () {
 
-        Route::post('login', 'login')->name('auth.login');
-        Route::post('register', 'register')->name('auth.register');
+        Route::any('login', 'login')->name('auth.login');
+        Route::any('register', 'register')->name('auth.register');
     
     });
 
