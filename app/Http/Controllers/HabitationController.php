@@ -3,41 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Models\Habitation;
+use App\MyStaff\ResponseHelper;
 use Illuminate\Http\Request;
 
 class HabitationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return response()->json(Habitation::all());
-    }
+
+    public function __construct() { }
 
     /**
-     * Store a newly created resource in storage.
+     * Check if an Habitation exists or not
      */
+    public static function exists(int $id) : bool 
+    {
+        return count(Habitation::find(['id' => $id])) !== 0;
+    }
+
+    public function index()
+    {
+        return response(ResponseHelper::json(Habitation::all()));
+    }
+
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(int $id)
+    public function show(Request $request, int $id)
     {
-
-        $hab = Habitation::find(['id' => $id]);
-        if(count($hab) === 0)
+        if(!self::exists($id))
         {
-            return response()->json([
+            return response(ResponseHelper::json([
                 'error' => 'Could\'nt find an habitation with id ' . $id 
-            ], 404);
+            ]), 404);
         }
 
-        return response()->json($hab);
+        //
+        $hab = Habitation::find(['id' => $id]);
+        return response(ResponseHelper::json($hab));
     }
 
     /**
@@ -54,15 +57,15 @@ class HabitationController extends Controller
     public function destroy(Request $request, int $id)
     {
         // if the $id is greater than  
-        if($id >= count(Habitation::all()))
-            return response()->json([
+        if(!self::exists($id))
+            return response(ResponseHelper::json([
                 'error' => 'Could\'nt find an habitation with id ' . $id 
-            ], 404);
+            ]), 404);
 
         Habitation::destroy($id);
 
-        return response()->json([
+        return response(ResponseHelper::json([
             'message' => 'Habitation with id ' . $id . ' is deleted'
-        ]);
+        ]));
     }
 }
