@@ -35,13 +35,12 @@ class HabitationController extends Controller
                 $request->validated(), 
                 (['min_price'=> 0, 'price' => 0]));
             
-            $habs = DB::table('habitations')
-                        ->where($validated)
+            $habs = Habitation::where($validated)
                         ->where('price', '>=', $request['min_price'])
                         ->get();
 
         } else {
-            $habs = DB::table('habitations')->where($request->validated())->get();
+            $habs = Habitation::where($request->validated())->get();
         } 
 
         return ResponseHelper::json($habs);
@@ -62,7 +61,7 @@ class HabitationController extends Controller
         }
 
         //
-        return ResponseHelper::json(Habitation::find(['id' => $id]));
+        return ResponseHelper::json(Habitation::find($id));
     }
 
     /**
@@ -82,7 +81,7 @@ class HabitationController extends Controller
                     ->where(['id' => $id])
                     ->update($inputs);
 
-        return ResponseHelper::json([ "message" => 'habitation with id ' . $id . 'has successfuly updated']);
+        return ResponseHelper::json([ "message" => 'habitation with id ' . $id . ' has successfuly updated']);
     }
 
     /**
