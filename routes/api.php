@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HabitationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +26,8 @@ Route::prefix('v1')->group(function(){
             'current_api_version' => config('api.CURRENT_VERSION')
         ]);
     })->name('index');
+
+    Route::apiResource('habitation', HabitationController::class);
 
 });
 
