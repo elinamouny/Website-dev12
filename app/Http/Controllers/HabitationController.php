@@ -25,7 +25,7 @@ class HabitationController extends Controller
     {
         // if the flag filter is not set
         if(!$request->isFiltered())
-            return response(ResponseHelper::json(Habitation::all()));
+            return ResponseHelper::json(Habitation::all());
         // if we want to filter the response
 
         if($request->has('min_price')) {
@@ -44,7 +44,7 @@ class HabitationController extends Controller
             $habs = DB::table('habitations')->where($request->validated())->get();
         } 
 
-        return response()->json($habs, options:JSON_PRETTY_PRINT);
+        return ResponseHelper::json($habs);
     }
 
     public function store(Request $request)
@@ -56,22 +56,33 @@ class HabitationController extends Controller
     {
         if(!self::exists($id))
         {
-            return response(ResponseHelper::json([
+            return ResponseHelper::json([
                 'error' => 'Could\'nt find an habitation with id ' . $id 
-            ]), 404);
+            ], 404);
         }
 
         //
-        $hab = Habitation::find(['id' => $id]);
-        return response(ResponseHelper::json($hab));
+        return ResponseHelper::json(Habitation::find(['id' => $id]));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Habitation $habitation)
+    public function update(HabitationFiteredRequest $request, int $id)
     {
-        //
+
+        $inputs = array_diff_key( $request->validated(), ['min_price' => 0, 'area' => 0] );
+        
+        // if request does not contains datas
+        if( empty($inputs) )
+            return ResponseHelper::json(['error' => 'No data detected']);
+
+        // update the table
+        $hab = DB::table('habitations')
+                    ->where(['id' => $id])
+                    ->update($inputs);
+
+        return ResponseHelper::json([ "message" => 'habitation with id ' . $id . 'has successfuly updated']);
     }
 
     /**
@@ -81,14 +92,12 @@ class HabitationController extends Controller
     {
         // if the $id is greater than  
         if(!self::exists($id))
-            return response(ResponseHelper::json([
+            return ResponseHelper::json([
                 'error' => 'Could\'nt find an habitation with id ' . $id 
-            ]), 404);
+            ], 404);
 
         Habitation::destroy($id);
 
-        return response(ResponseHelper::json([
-            'message' => 'Habitation with id ' . $id . ' is deleted'
-        ]));
+        return ResponseHelper::json([ 'message' => 'Habitation with id ' . $id . ' is deleted' ]);
     }
 }
