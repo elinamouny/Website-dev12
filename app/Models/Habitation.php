@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Habitation extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     /**
      * Get the user that owns the Habitation
