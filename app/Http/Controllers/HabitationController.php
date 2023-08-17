@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\NonAuthorizedException;
 use App\Models\Habitation;
 use App\MyStaff\ResponseHelper;
 use Illuminate\Http\Request;
 use App\Http\Requests\HabitationFiteredRequest;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 class HabitationController extends Controller
 {
@@ -53,6 +55,7 @@ class HabitationController extends Controller
 
     public function show(Request $request, int $id)
     {
+
         if(!self::exists($id))
         {
             return ResponseHelper::json([
@@ -69,6 +72,14 @@ class HabitationController extends Controller
      */
     public function update(HabitationFiteredRequest $request, int $id)
     {
+
+        $hab = Habitation::find($id);
+        if(is_null($hab))
+            return ResponseHelper::json([], 404);
+
+        // check if user can update this habitation
+        if(!Gate::allows('update-habit', $hab))
+            throw new NonAuthorizedException();
 
         $inputs = array_diff_key( $request->validated(), ['min_price' => 0, 'area' => 0] );
         
