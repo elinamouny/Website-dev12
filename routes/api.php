@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\HabitationController;
 use App\Http\Controllers\UserController;
 use App\Models\Habitation;
@@ -33,6 +34,14 @@ Route::prefix('v1')->group(function(){
     Route::apiResource('habitation', HabitationController::class);
 
     Route::apiResource('user', UserController::class);
+
+    // auth routes
+    Route::controller(AuthController::class)->prefix('auth')->group(function () {
+
+        Route::post('login', 'login')->name('auth.login');
+        Route::post('register', 'register')->name('auth.register');
+    
+    });
 
 });
 

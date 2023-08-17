@@ -53,4 +53,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Habitation::class);
     }
+
+    public function account_verification_status() :string
+    {
+        if(is_null($this->email_verified_at))
+            return 'Not Verified';
+        else 
+            return 'Verified';
+    }
 }
