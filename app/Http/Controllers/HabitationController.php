@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Habitation;
 use App\MyStaff\ResponseHelper;
 use Illuminate\Http\Request;
+use App\Http\Requests\HabitationFiteredRequest;
+use Illuminate\Support\Facades\DB;
 
 class HabitationController extends Controller
 {
@@ -19,9 +21,30 @@ class HabitationController extends Controller
         return count(Habitation::find(['id' => $id])) !== 0;
     }
 
-    public function index()
+    public function index(HabitationFiteredRequest $request)
     {
-        return response(ResponseHelper::json(Habitation::all()));
+        // if the flag filter is not set
+        if(!$request->isFiltered())
+            return response(ResponseHelper::json(Habitation::all()));
+        // if we want to filter the response
+
+        if($request->has('min_price')) {
+            
+            // get the array without price and min_price
+            $validated = array_diff_key(
+                $request->validated(), 
+                (['min_price'=> 0, 'price' => 0]));
+            
+            $habs = DB::table('habitations')
+                        ->where($validated)
+                        ->where('price', '>=', $request['min_price'])
+                        ->get();
+
+        } else {
+            $habs = DB::table('habitations')->where($request->validated())->get();
+        } 
+
+        return response()->json($habs, options:JSON_PRETTY_PRINT);
     }
 
     public function store(Request $request)

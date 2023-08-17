@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\HabitationController;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
 
 /*
