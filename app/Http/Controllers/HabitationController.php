@@ -99,4 +99,16 @@ class HabitationController extends Controller
 
         return ResponseHelper::json([ 'message' => 'Habitation with id ' . $id . ' is deleted' ]);
     }
+
+    public function user(Request $request, int $id)
+    {
+
+        $hab = Habitation::find($id);
+        if(is_null($hab))
+            return ResponseHelper::json([
+                'error' => 'Invalid Habitation id'
+            ], 404);
+
+        return ResponseHelper::json(['user' => $hab->user]);
+    }
 }

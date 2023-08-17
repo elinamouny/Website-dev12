@@ -41,4 +41,19 @@ class UserController extends Controller
         
     }
 
+    public function habitations(Request $request, $id) {
+
+        $user = User::find($id);
+        if(is_null($user))
+            return ResponseHelper::json([
+                'error' => 'Invalid User Id'
+            ]);
+        
+        $habs = $user->habitations;
+        return ResponseHelper::json([
+            'user' => $user,
+            'habitations' => $habs
+        ]);
+    }
+
 }
