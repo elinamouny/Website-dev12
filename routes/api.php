@@ -32,7 +32,7 @@ Route::prefix('v1')->group(function(){
 
 
     // app routes
-    Route::middleware('token')->group(function() {
+    Route::middleware('auth:sanctum')->group(function() {
         
         Route::apiResource('habitation', HabitationController::class);
         Route::get('habitation/{id}/user', [HabitationController::class, 'user']);

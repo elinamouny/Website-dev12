@@ -32,7 +32,7 @@ class IsAuthorizedToMakeRequest
         
         // check if token is valid
         $tokenAccessInstance = PersonalAccessToken::findToken($token);
-        
+
         if(!is_null($tokenAccessInstance))
             return $next($request);
         else 

@@ -40,6 +40,9 @@ class Kernel extends HttpKernel
 
         // use by Laravel Sanctum
         'api' => [
+            // my middleware
+            \App\Http\Middleware\UpdateAuthorizationHeaderFromToken::class,
+            //
             \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
@@ -67,6 +70,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
 
         // my aliases
-        'token' => \App\Http\Middleware\IsAuthorizedToMakeRequest::class,
+        // 'token' => \App\Http\Middleware\IsAuthorizedToMakeRequest::class,
     ];
 }
