@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('habitations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->foreignId('user_id');
             $table->string('city');
             $table->string('type');
             $table->float('price');
+            $table->float('area');
             $table->integer('bedrooms');
             $table->integer('garages');
             $table->integer('bathrooms');

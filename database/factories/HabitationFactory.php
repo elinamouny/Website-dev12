@@ -17,10 +17,11 @@ class HabitationFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->name(),
+            'user_id' => random_int(1,5),
             'city' => fake()->city(),
             'type' => 'House',
             'price' => random_int(100, 200),
+            'area' => random_int(1000, 5000),
             'bedrooms' => rand(1,5),
             'garages' => rand(1,5),
             'bathrooms' => rand(1,5)
