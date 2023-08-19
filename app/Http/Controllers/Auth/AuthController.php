@@ -60,7 +60,7 @@ class AuthController extends Controller
             $user = User::create($inputs);
             // create the tokens and success array
             $success = [
-                'account_status' => $user->email_verification_status(),
+                // 'account_status' => $user->email_verification_status(),
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
@@ -69,6 +69,7 @@ class AuthController extends Controller
 
             return ResponseHelper::json($success);
         } catch (Exception $e) {
+
             return ResponseHelper::json([
                 'error' => 'Account already exists'
             ]);
